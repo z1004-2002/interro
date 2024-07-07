@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "318396921736",
+    "project_id": "saki-interro-1",
+    "storage_bucket": "saki-interro-1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:318396921736:android:4a2595617de387d83eac3d",
+        "android_client_info": {
+          "package_name": "com.saki.interro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwDePHM-vwy0CQWYoG0n_xdMjPN717PPg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
