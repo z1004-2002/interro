@@ -67,7 +67,7 @@ class _SignUpState extends State<SignUp> {
       resizeToAvoidBottomInset: false,
       body: Container(
         decoration: const BoxDecoration(
-          color: Color.fromARGB(255, 7, 5, 136),
+          color: Colors.white,
         ),
         child: SizedBox(
           child: Column(
@@ -77,7 +77,7 @@ class _SignUpState extends State<SignUp> {
                 text: "INTERRO",
                 textStyle: TextStyle(
                   fontSize: 70,
-                  color: Colors.white,
+                  color: Color.fromARGB(255, 7, 5, 136),
                   fontFamily: "CadhoToys",
                 ),
                 strokeColor: Colors.lightBlue,
@@ -120,7 +120,8 @@ class _SignUpState extends State<SignUp> {
                     child: const Text(
                       "Connexion",
                       style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.white),
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(255, 7, 5, 136)),
                     ),
                   )
                 ],

@@ -22,15 +22,15 @@ class TextFieldInput extends StatelessWidget {
       child: TextField(
         style: const TextStyle(
           fontSize: 20,
-          color: Colors.white,
+          color: Color.fromARGB(255, 7, 5, 136),
         ),
         controller: textEditingController,
         decoration: InputDecoration(
-          fillColor: Colors.white,
-          prefixIcon: Icon(icon, color: Colors.white),
+          fillColor: Color.fromARGB(255, 7, 5, 136),
+          prefixIcon: Icon(icon, color: Color.fromARGB(255, 7, 5, 136)),
           hintText: hintText,
           hintStyle: const TextStyle(
-            color: Color.fromARGB(136, 255, 255, 255),
+            color: Color.fromARGB(141, 0, 0, 0),
             fontSize: 18,
           ),
           /*enabledBorder: OutlineInputBorder(

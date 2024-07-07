@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:interro/Services/google_auth.dart';
 import 'package:interro/pages/create_quizz.dart';
+import 'package:interro/pages/login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stroke_text/stroke_text.dart';
 
 class Home extends StatefulWidget {
@@ -23,9 +26,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       body: Container(
         width: double.infinity,
-        decoration: const BoxDecoration(
-          color: Color.fromARGB(255, 7, 5, 136),
-        ),
+        decoration: const BoxDecoration(),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -37,7 +38,7 @@ class _HomeState extends State<Home> {
                     text: "Bienvenu sur",
                     textStyle: TextStyle(
                       fontSize: 40,
-                      color: Colors.white,
+                      color: Color.fromARGB(255, 7, 5, 136),
                       fontFamily: "CadhoToys",
                     ),
                     strokeColor: Colors.lightBlue,
@@ -47,7 +48,7 @@ class _HomeState extends State<Home> {
                     text: "INTERRO",
                     textStyle: TextStyle(
                       fontSize: 70,
-                      color: Colors.white,
+                      color: Color.fromARGB(255, 7, 5, 136),
                       fontFamily: "CadhoToys",
                     ),
                     strokeColor: Colors.lightBlue,
@@ -56,34 +57,34 @@ class _HomeState extends State<Home> {
                 ],
               ),
             ),
-            StreamBuilder(
-              stream: quizz.snapshots(),
-              builder: (context, AsyncSnapshot<QuerySnapshot> streamSnap) {
-                if (streamSnap.hasData) {
-                  return ListView.builder(
-                    itemCount: streamSnap.data!.docs.length,
-                    itemBuilder: (context, index) {
-                      final DocumentSnapshot documentSnapshot =
-                          streamSnap.data!.docs[index];
-                      return Material(
-                        child: ListTile(
-                          title: Text(
-                            documentSnapshot["theme"],
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                }
-                return const Center(
-                  child: Text("data"),
-                );
-              },
-            ),
+            // StreamBuilder(
+            //   stream: quizz.snapshots(),
+            //   builder: (context, AsyncSnapshot<QuerySnapshot> streamSnap) {
+            //     if (streamSnap.hasData) {
+            //       return ListView.builder(
+            //         itemCount: streamSnap.data!.docs.length,
+            //         itemBuilder: (context, index) {
+            //           final DocumentSnapshot documentSnapshot =
+            //               streamSnap.data!.docs[index];
+            //           return Material(
+            //             child: ListTile(
+            //               title: Text(
+            //                 documentSnapshot["theme"],
+            //                 style: const TextStyle(
+            //                   fontWeight: FontWeight.bold,
+            //                   fontSize: 20,
+            //                 ),
+            //               ),
+            //             ),
+            //           );
+            //         },
+            //       );
+            //     }
+            //     return const Center(
+            //       child: Text("data"),
+            //     );
+            //   },
+            // ),
             FloatingActionButton(
               onPressed: () {
                 Navigator.of(context).push(
@@ -129,18 +130,26 @@ class _HomeState extends State<Home> {
                     },
                     child: const Icon(
                       Icons.settings,
-                      color: Colors.white,
+                      color: Color.fromARGB(255, 7, 5, 136),
                       size: 40,
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {
-                      print("out");
+                    onTap: () async {
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      prefs.setBool("isAuthenticated", false);
+                      await FirebaseServices().googleSignOut();
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => const LogIn(),
+                        ),
+                      );
                     },
                     child: const Icon(
                       Icons.exit_to_app_outlined,
                       size: 40,
-                      color: Colors.white,
+                      color: Color.fromARGB(255, 7, 5, 136),
                     ),
                   ),
                 ],

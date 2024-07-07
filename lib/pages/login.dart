@@ -62,10 +62,10 @@ class _LogInState extends State<LogIn> {
     //double height = MediaQuery.of(context).size.height;
     return Scaffold(
       // resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white,
+      backgroundColor: Color.fromARGB(255, 7, 5, 136),
       body: Container(
         decoration: const BoxDecoration(
-          color: Color.fromARGB(255, 7, 5, 136),
+          color: Colors.white,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -74,7 +74,7 @@ class _LogInState extends State<LogIn> {
               text: "INTERRO",
               textStyle: TextStyle(
                 fontSize: 70,
-                color: Colors.white,
+                color: Color.fromARGB(255, 7, 5, 136),
                 fontFamily: "CadhoToys",
               ),
               strokeColor: Colors.lightBlue,
@@ -117,7 +117,7 @@ class _LogInState extends State<LogIn> {
                     "SignUp",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: Color.fromARGB(255, 7, 5, 136),
                     ),
                   ),
                 )

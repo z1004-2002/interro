@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CreateQuizz extends StatefulWidget {
+  const CreateQuizz({super.key});
+
   @override
   _CreateQuizz createState() => _CreateQuizz();
 }
 
 class _CreateQuizz extends State<CreateQuizz> {
   final _formKey = GlobalKey<FormState>();
-  final _quizzController = TextEditingController();
+  final _themeController = TextEditingController();
+  final _questionController = TextEditingController();
   final _res1Controller = TextEditingController();
   final _res2Controller = TextEditingController();
   final _res3Controller = TextEditingController();
@@ -18,12 +21,17 @@ class _CreateQuizz extends State<CreateQuizz> {
   void _saveQuiz() async {
     if (_formKey.currentState!.validate()) {
       await FirebaseFirestore.instance.collection('quizzes').add({
-        'quizz': _quizzController.text,
-        'res1': _res1Controller.text,
-        'res2': _res2Controller.text,
-        'res3': _res3Controller.text,
-        'res4': _res4Controller.text,
-        'response': _responseController.text,
+        'theme': _themeController.text,
+        'quizz': [
+          {
+            "question": _questionController.text,
+            'res1': _res1Controller.text,
+            'res2': _res2Controller.text,
+            'res3': _res3Controller.text,
+            'res4': _res4Controller.text,
+            'response': _responseController.text,
+          }
+        ],
       });
       Navigator.of(context).pop();
     }
@@ -42,7 +50,17 @@ class _CreateQuizz extends State<CreateQuizz> {
           child: ListView(
             children: [
               TextFormField(
-                controller: _quizzController,
+                controller: _themeController,
+                decoration: InputDecoration(labelText: 'Theme'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Veuillez entrer le theme du quizz';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _questionController,
                 decoration: InputDecoration(labelText: 'Question'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -63,7 +81,7 @@ class _CreateQuizz extends State<CreateQuizz> {
               ),
               TextFormField(
                 controller: _res2Controller,
-                decoration: InputDecoration(labelText: 'Proposition 2'),
+                decoration: const InputDecoration(labelText: 'Proposition 2'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Veuillez entrer la proposition 2';
@@ -73,7 +91,7 @@ class _CreateQuizz extends State<CreateQuizz> {
               ),
               TextFormField(
                 controller: _res3Controller,
-                decoration: InputDecoration(labelText: 'Proposition 3'),
+                decoration: const InputDecoration(labelText: 'Proposition 3'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Veuillez entrer la proposition 3';
@@ -83,7 +101,7 @@ class _CreateQuizz extends State<CreateQuizz> {
               ),
               TextFormField(
                 controller: _res4Controller,
-                decoration: InputDecoration(labelText: 'Proposition 4'),
+                decoration: const InputDecoration(labelText: 'Proposition 4'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Veuillez entrer la proposition 4';
@@ -93,7 +111,7 @@ class _CreateQuizz extends State<CreateQuizz> {
               ),
               TextFormField(
                 controller: _responseController,
-                decoration: InputDecoration(labelText: 'Bonne réponse'),
+                decoration: const InputDecoration(labelText: 'Bonne réponse'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Veuillez entrer la bonne réponse';
@@ -101,10 +119,10 @@ class _CreateQuizz extends State<CreateQuizz> {
                   return null;
                 },
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: _saveQuiz,
-                child: Text('Enregistrer'),
+                child: const Text('Enregistrer'),
               ),
             ],
           ),

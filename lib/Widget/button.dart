@@ -24,13 +24,13 @@ class MyButtons extends StatelessWidget {
                 Radius.circular(30),
               ),
             ),
-            color: Colors.white,
+            color: Color.fromARGB(255, 7, 5, 136),
           ),
           child: Text(
             text,
             style: const TextStyle(
               fontSize: 20,
-              color: Colors.blue,
+              color: Colors.white,
               fontWeight: FontWeight.bold,
             ),
           ),
