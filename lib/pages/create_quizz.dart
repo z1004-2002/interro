@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class CreateQuiz extends StatefulWidget {
+class CreateQuizz extends StatefulWidget {
   @override
-  _CreateQuiz createState() => _CreateQuiz();
+  _CreateQuizz createState() => _CreateQuizz();
 }
 
-class _CreateQuiz extends State<CreateQuiz> {
+class _CreateQuizz extends State<CreateQuizz> {
   final _formKey = GlobalKey<FormState>();
   final _quizzController = TextEditingController();
   final _res1Controller = TextEditingController();
@@ -24,7 +24,6 @@ class _CreateQuiz extends State<CreateQuiz> {
         'res3': _res3Controller.text,
         'res4': _res4Controller.text,
         'response': _responseController.text,
-        'createdAt': Timestamp.now(),
       });
       Navigator.of(context).pop();
     }
