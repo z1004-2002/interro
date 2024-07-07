@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:interro/Services/authentication.dart';
-import 'package:interro/Widget/button.dart';
-import 'package:interro/Widget/snackbar.dart';
-import 'package:interro/Widget/text_field.dart';
+import 'package:interro/services/authentication.dart';
+import 'package:interro/widgets/button.dart';
+import 'package:interro/widgets/snackbar.dart';
+import 'package:interro/widgets/text_field.dart';
 import 'package:interro/pages/home.dart';
-import 'package:interro/pages/login.dart';
+import 'package:interro/pages/auth/login.dart';
 import 'package:stroke_text/stroke_text.dart';
 
 class SignUp extends StatefulWidget {
@@ -40,10 +40,10 @@ class _SignUpState extends State<SignUp> {
       name: nameController.text,
     );
     // if string return is success, user has been creaded and navigate to next screen other witse show error.
+    setState(() {
+      isLoading = false;
+    });
     if (res == "success") {
-      setState(() {
-        isLoading = false;
-      });
       showSnackBar(context, res);
       //navigate to the next screen
       Navigator.of(context).pushReplacement(
@@ -52,9 +52,6 @@ class _SignUpState extends State<SignUp> {
         ),
       );
     } else {
-      setState(() {
-        isLoading = false;
-      });
       // show error
       showSnackBar(context, res);
     }
@@ -62,7 +59,6 @@ class _SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(

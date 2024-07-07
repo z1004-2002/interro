@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:interro/pages/create_quizz.dart';
+import 'package:interro/pages/quizz/create_quizz.dart';
 import 'package:stroke_text/stroke_text.dart';
 
 class Home extends StatefulWidget {
@@ -27,7 +27,7 @@ class _HomeState extends State<Home> {
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => CreateQuizz(),
+              builder: (context) => const CreateQuizz(),
             ),
           );
         },
@@ -38,7 +38,7 @@ class _HomeState extends State<Home> {
       body: Container(
         width: double.infinity,
         decoration: const BoxDecoration(
-          color: Color.fromARGB(255, 7, 5, 136),
+          color: Color(0xFF070588),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

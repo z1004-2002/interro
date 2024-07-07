@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:interro/Services/authentication.dart';
-import 'package:interro/Widget/button.dart';
-import 'package:interro/Widget/snackbar.dart';
-import 'package:interro/Widget/text_field.dart';
+import 'package:interro/services/authentication.dart';
+import 'package:interro/widgets/button.dart';
+import 'package:interro/widgets/snackbar.dart';
+import 'package:interro/widgets/text_field.dart';
 import 'package:interro/pages/home.dart';
-import 'package:interro/pages/signup.dart';
+import 'package:interro/pages/auth/signup.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stroke_text/stroke_text.dart';
 
@@ -27,7 +27,7 @@ class _LogInState extends State<LogIn> {
     passwordController.dispose();
   }
 
-// email and passowrd auth part
+  /// email and passowrd auth part
   void loginUser() async {
     setState(() {
       isLoading = true;
@@ -36,10 +36,10 @@ class _LogInState extends State<LogIn> {
     String res = await AuthMethod().loginUser(
         email: emailController.text, password: passwordController.text);
 
+    setState(() {
+      isLoading = false;
+    });
     if (res == "success") {
-      setState(() {
-        isLoading = false;
-      });
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setBool("isAuthenticated", true);
       //navigate to the home screen
@@ -49,9 +49,6 @@ class _LogInState extends State<LogIn> {
         ),
       );
     } else {
-      setState(() {
-        isLoading = false;
-      });
       // show error
       showSnackBar(context, res);
     }
@@ -59,7 +56,6 @@ class _LogInState extends State<LogIn> {
 
   @override
   Widget build(BuildContext context) {
-    //double height = MediaQuery.of(context).size.height;
     return Scaffold(
       // resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,

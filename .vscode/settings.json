@@ -1,4 +1,4 @@
 {
 		"dart.flutterSdkPath": "~/Documents/flutter-3.19.0",
-		"java.configuration.updateBuildConfiguration": "interactive"
+		"java.configuration.updateBuildConfiguration": "disabled"
 }

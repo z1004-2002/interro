@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:interro/constants/constants.dart';
 import 'package:interro/pages/home.dart';
 import 'package:interro/pages/welcome.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,10 +24,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
         useMaterial3: true,
       ),
       home: isAuthenticated ? const Home() : const Welcome(),
