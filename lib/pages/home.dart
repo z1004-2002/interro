@@ -11,16 +11,30 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  late CollectionReference quizz;
+  late CollectionReference quizzes;
+
   @override
   void initState() {
-    quizz = FirebaseFirestore.instance.collection("quizzes");
+    quizzes = FirebaseFirestore.instance.collection("quizzes");
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        elevation: 40,
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => CreateQuizz(),
+            ),
+          );
+        },
+        tooltip: 'Créer un nouveau quiz',
+        child: const Icon(Icons.add),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: Container(
         width: double.infinity,
         decoration: const BoxDecoration(
@@ -56,19 +70,32 @@ class _HomeState extends State<Home> {
                 ],
               ),
             ),
-            StreamBuilder(
-              stream: quizz.snapshots(),
-              builder: (context, AsyncSnapshot<QuerySnapshot> streamSnap) {
-                if (streamSnap.hasData) {
+            Expanded(
+              child: StreamBuilder(
+                stream: quizzes.snapshots(),
+                builder: (context, AsyncSnapshot<QuerySnapshot> streamSnap) {
+                  if (streamSnap.hasError) {
+                    return Center(child: Text('Erreur: ${streamSnap.error}'));
+                  }
+
+                  if (streamSnap.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  final data = streamSnap.requireData;
+                  final quizDocument = data.docs[0];
+                  print(quizDocument.data());
+
                   return ListView.builder(
                     itemCount: streamSnap.data!.docs.length,
                     itemBuilder: (context, index) {
                       final DocumentSnapshot documentSnapshot =
                           streamSnap.data!.docs[index];
+                      final quizDocument = documentSnapshot.data();
                       return Material(
                         child: ListTile(
                           title: Text(
-                            documentSnapshot["theme"],
+                            quizDocument.toString(),
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
@@ -78,22 +105,8 @@ class _HomeState extends State<Home> {
                       );
                     },
                   );
-                }
-                return const Center(
-                  child: Text("data"),
-                );
-              },
-            ),
-            FloatingActionButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => CreateQuizz(),
-                  ),
-                );
-              },
-              tooltip: 'Créer un nouveau quiz',
-              child: const Icon(Icons.add),
+                },
+              ),
             ),
 
             // const Text(
