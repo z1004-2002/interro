@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:interro/Services/authentication.dart';
-import 'package:interro/Widget/button.dart';
-import 'package:interro/Widget/snackbar.dart';
-import 'package:interro/Widget/text_field.dart';
-import 'package:interro/base.dart';
-import 'package:interro/pages/signup.dart';
+import 'package:interro/pages/bottom_nav/bottom_nav.dart';
+import 'package:interro/services/authentication.dart';
+import 'package:interro/widgets/button.dart';
+import 'package:interro/widgets/show_snack_bar.dart';
+import 'package:interro/widgets/text_field.dart';
+import 'package:interro/pages/auth/signup.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stroke_text/stroke_text.dart';
 
+/// Ecran de connexion
 class LogIn extends StatefulWidget {
   const LogIn({super.key});
 
@@ -16,30 +17,36 @@ class LogIn extends StatefulWidget {
 }
 
 class _LogInState extends State<LogIn> {
-  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  bool isLoading = false;
 
   @override
   void dispose() {
     super.dispose();
-    phoneController.dispose();
+    emailController.dispose();
     passwordController.dispose();
   }
 
-// email and passowrd auth part
+  /// email and passowrd auth part
   void loginUser() async {
+    setState(() {
+      isLoading = true;
+    });
     // signup user using our authmethod
     String res = await AuthMethod().loginUser(
-        phone: phoneController.text, password: passwordController.text);
+        email: emailController.text, password: passwordController.text);
 
+    setState(() {
+      isLoading = false;
+    });
     if (res == "success") {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setBool("isAuthenticated", true);
-      prefs.setString("phone", phoneController.text);
       //navigate to the home screen
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => Base(),
+          builder: (context) => const BottomNav(),
         ),
       );
     } else {
@@ -50,13 +57,12 @@ class _LogInState extends State<LogIn> {
 
   @override
   Widget build(BuildContext context) {
-    //double height = MediaQuery.of(context).size.height;
     return Scaffold(
       // resizeToAvoidBottomInset: false,
-      backgroundColor: Color.fromARGB(255, 7, 5, 136),
+      backgroundColor: Colors.white,
       body: Container(
         decoration: const BoxDecoration(
-          color: Colors.white,
+          color: Color.fromARGB(255, 7, 5, 136),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -65,16 +71,16 @@ class _LogInState extends State<LogIn> {
               text: "INTERRO",
               textStyle: TextStyle(
                 fontSize: 70,
-                color: Color.fromARGB(255, 7, 5, 136),
+                color: Colors.white,
                 fontFamily: "CadhoToys",
               ),
               strokeColor: Colors.lightBlue,
               strokeWidth: 5,
             ),
             TextFieldInput(
-              icon: Icons.phone,
-              textEditingController: phoneController,
-              hintText: 'Phone',
+              icon: Icons.person,
+              textEditingController: emailController,
+              hintText: 'Email',
               textInputType: TextInputType.text,
             ),
             TextFieldInput(
@@ -84,10 +90,7 @@ class _LogInState extends State<LogIn> {
               textInputType: TextInputType.text,
               isPass: true,
             ),
-            MyButtons(
-              onTap: loginUser,
-              text: "Connexion",
-            ),
+            MyButtons(onTap: loginUser, text: "Connexion"),
 
             // Don't have an account? got to signup screen
             Row(
@@ -111,7 +114,7 @@ class _LogInState extends State<LogIn> {
                     "SignUp",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(255, 7, 5, 136),
+                      color: Colors.white,
                     ),
                   ),
                 )

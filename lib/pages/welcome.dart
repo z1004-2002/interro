@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:interro/Widget/button.dart';
-import 'package:interro/pages/login.dart';
-import 'package:interro/pages/signup.dart';
+import 'package:interro/constants/constants.dart';
+import 'package:interro/widgets/button.dart';
+import 'package:interro/pages/auth/login.dart';
+import 'package:interro/pages/auth/signup.dart';
 import 'package:stroke_text/stroke_text.dart';
 
 class Welcome extends StatefulWidget {
@@ -18,7 +19,7 @@ class _WelcomeState extends State<Welcome> {
       body: Container(
         width: double.infinity,
         decoration: const BoxDecoration(
-          color: Colors.white,
+          color: secondColor,
         ),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -32,7 +33,7 @@ class _WelcomeState extends State<Welcome> {
                   color: Color.fromARGB(255, 7, 5, 136),
                   fontFamily: "CadhoToys",
                 ),
-                strokeColor: Colors.lightBlue,
+                strokeColor: thirdColor,
                 strokeWidth: 5,
               ),
               Expanded(
@@ -66,44 +67,6 @@ class _WelcomeState extends State<Welcome> {
             ],
           ),
         ),
-        /*Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            const Text(
-              "Bienvenu sur",
-              style: TextStyle(fontSize: 30),
-            ),
-            const StrokeText(
-              text: "INTERRO",
-              textStyle: TextStyle(
-                fontSize: 70,
-                color: Colors.white,
-                fontFamily: "CadhoToys",
-              ),
-              strokeColor: Colors.lightBlue,
-              strokeWidth: 5,
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Column(
-                  children: [
-                    MyButtons(onTap: login, text: "Se Connecter"),
-                    //MyButtons(onTap: signup, text: "S'enregistrer"),
-                  ],
-                )
-              ],
-            ),
-            const Padding(
-              padding: EdgeInsets.only(right: 60),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [Text("By")],
-              ),
-            )
-          ],
-        ),
-      */
       ),
     );
   }
@@ -133,21 +96,23 @@ class _WelcomeState extends State<Welcome> {
           children: [
             Icon(
               icon,
-              color: Color.fromARGB(255, 7, 5, 136),
+              color: primaryColor,
               size: 30.0,
             ),
             const SizedBox(width: 10.0),
             Text(
               title,
-              style: const TextStyle(
-                  fontSize: 30, color: Color.fromARGB(255, 7, 5, 136)),
+              style: const TextStyle(fontSize: 30, color: primaryColor),
             ),
           ],
         ),
         const SizedBox(height: 8.0),
         Text(
           content,
-          style: const TextStyle(fontSize: 17, color: Colors.black),
+          style: const TextStyle(
+            fontSize: 17,
+            color: Color.fromARGB(255, 223, 223, 223),
+          ),
         ),
         const SizedBox(height: 16.0),
       ],

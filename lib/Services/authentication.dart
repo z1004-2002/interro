@@ -5,8 +5,7 @@ class AuthMethod {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  // SignUp User
-
+  /// SignUp User
   Future<String> signupUser({
     required String email,
     required String phone,
@@ -15,10 +14,7 @@ class AuthMethod {
   }) async {
     String res = "Some error Occurred";
     try {
-      if (email.isNotEmpty ||
-          password.isNotEmpty ||
-          name.isNotEmpty ||
-          phone.isNotEmpty) {
+      if (email.isNotEmpty || password.isNotEmpty || name.isNotEmpty) {
         // register user in auth with email and password
 
         // add user to your  firestore database
@@ -49,7 +45,7 @@ class AuthMethod {
     return res;
   }
 
-  // logIn user
+  /// logIn user
   Future<String> loginUser({
     required String phone,
     required String password,
@@ -81,7 +77,7 @@ class AuthMethod {
     return res;
   }
 
-  // for signout
+  /// for sighout
   signOut() async {
     await _auth.signOut();
   }

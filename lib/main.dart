@@ -1,12 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:interro/base.dart';
+import 'package:flutter/services.dart';
+import 'package:interro/constants/constants.dart';
+import 'package:interro/pages/bottom_nav/bottom_nav.dart';
 import 'package:interro/pages/welcome.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
+
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+    statusBarIconBrightness: Brightness.dark,
+    systemNavigationBarColor: Colors.transparent,
+    systemNavigationBarIconBrightness: Brightness.dark,
+  ));
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -23,15 +36,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 7, 5, 136),
-        ),
+        colorScheme: ColorScheme.fromSeed(seedColor: secondColor),
         useMaterial3: true,
       ),
-      home: isAuthenticated ? const Base() : const Welcome(),
+      home: isAuthenticated ? const BottomNav() : const Welcome(),
     );
   }
 }
