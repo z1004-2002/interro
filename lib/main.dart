@@ -26,10 +26,12 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color.fromARGB(255, 7, 5, 136),
+        ),
         useMaterial3: true,
       ),
-      home: isAuthenticated ? Base() : Welcome(),
+      home: isAuthenticated ? const Base() : const Welcome(),
     );
   }
 }

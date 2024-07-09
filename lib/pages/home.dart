@@ -23,7 +23,8 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        elevation: 40,
+        focusColor: Color.fromARGB(255, 7, 5, 136),
+        elevation: 20,
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(

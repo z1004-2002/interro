@@ -124,11 +124,11 @@ class _CreateQuizz extends State<CreateQuizz> {
               //   onPressed: () {
               //     ma_liste.add({
               //       "question": _questionController.text,
-              //       'res1': _res1Controller.text,
-              //       'res2': _res2Controller.text,
-              //       'res3': _res3Controller.text,
-              //       'res4': _res4Controller.text,
-              //       'response': _responseController.text,
+              //       'p1': _res1Controller.text,
+              //       'p2': _res2Controller.text,
+              //       'p3': _res3Controller.text,
+              //       'p4': _res4Controller.text,
+              //       'reponse': _responseController.text,
               //     });
               //     _questionController.text = "";
               //     _res1Controller.text = "";
