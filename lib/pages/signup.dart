@@ -38,7 +38,6 @@ class _SignUpState extends State<SignUp> {
     String res = await AuthMethod().signupUser(
       email: emailController.text,
       phone: phoneController.text,
-      phone: phoneController.text,
       password: passwordController.text,
       name: nameController.text,
     );
