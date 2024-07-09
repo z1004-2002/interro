@@ -9,6 +9,7 @@ class AuthMethod {
 
   Future<String> signupUser({
     required String email,
+    required String phone,
     required String password,
     required String name,
   }) async {
@@ -16,21 +17,31 @@ class AuthMethod {
     try {
       if (email.isNotEmpty ||
           password.isNotEmpty ||
-          name.isNotEmpty) {
+          name.isNotEmpty ||
+          phone.isNotEmpty) {
         // register user in auth with email and password
-        UserCredential cred = await _auth.createUserWithEmailAndPassword(
-          email: email,
-          password: password,
-        );
-        // add user to your  firestore database
-        print(cred.user!.uid);
-        await _firestore.collection("users").doc(cred.user!.uid).set({
-          'name': name,
-          'uid': cred.user!.uid,
-          'email': email,
-        });
 
-        res = "success";
+        // add user to your  firestore database
+        QuerySnapshot snap = await FirebaseFirestore.instance
+            .collection('users')
+            .where("phone", isEqualTo: phone)
+            .get();
+        if (snap.docs.isEmpty) {
+          UserCredential cred = await _auth.createUserWithEmailAndPassword(
+            email: email,
+            password: password,
+          );
+          await _firestore.collection("users").doc(cred.user!.uid).set({
+            'name': name,
+            'uid': cred.user!.uid,
+            'email': email,
+            'phone': phone,
+          });
+
+          res = "success";
+        } else {
+          return "user already registered";
+        }
       }
     } catch (err) {
       return err.toString();
@@ -40,18 +51,27 @@ class AuthMethod {
 
   // logIn user
   Future<String> loginUser({
-    required String email,
+    required String phone,
     required String password,
   }) async {
     String res = "Some error Occurred";
     try {
-      if (email.isNotEmpty || password.isNotEmpty) {
+      if (phone.isNotEmpty || password.isNotEmpty) {
+        QuerySnapshot snap = await FirebaseFirestore.instance
+            .collection('users')
+            .where("phone", isEqualTo: phone)
+            .get();
+        if (snap.docs.isNotEmpty) {
+          String email = snap.docs[0]['email'];
+          await _auth.signInWithEmailAndPassword(
+            email: email,
+            password: password,
+          );
+          res = "success";
+        } else {
+          res = "Utilisateur non trouvé";
+        }
         // logging in user with email and password
-        await _auth.signInWithEmailAndPassword(
-          email: email,
-          password: password,
-        );
-        res = "success";
       } else {
         res = "Please enter all the fields";
       }
@@ -61,8 +81,8 @@ class AuthMethod {
     return res;
   }
 
-  // for sighout
+  // for signout
   signOut() async {
-    // await _auth.signOut();
+    await _auth.signOut();
   }
 }

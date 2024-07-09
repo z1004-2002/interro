@@ -18,7 +18,7 @@ class _WelcomeState extends State<Welcome> {
       body: Container(
         width: double.infinity,
         decoration: const BoxDecoration(
-          color: Color.fromARGB(255, 7, 5, 136),
+          color: Colors.white,
         ),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -29,7 +29,7 @@ class _WelcomeState extends State<Welcome> {
                 text: "INTERRO",
                 textStyle: TextStyle(
                   fontSize: 70,
-                  color: Colors.white,
+                  color: Color.fromARGB(255, 7, 5, 136),
                   fontFamily: "CadhoToys",
                 ),
                 strokeColor: Colors.lightBlue,
@@ -130,21 +130,21 @@ class _WelcomeState extends State<Welcome> {
           children: [
             Icon(
               icon,
-              color: Colors.white,
+              color: Color.fromARGB(255, 7, 5, 136),
               size: 30.0,
             ),
             const SizedBox(width: 10.0),
             Text(
               title,
-              style: const TextStyle(fontSize: 30, color: Colors.white),
+              style: const TextStyle(
+                  fontSize: 30, color: Color.fromARGB(255, 7, 5, 136)),
             ),
           ],
         ),
         const SizedBox(height: 8.0),
         Text(
           content,
-          style: const TextStyle(
-              fontSize: 17, color: Color.fromARGB(255, 223, 223, 223)),
+          style: const TextStyle(fontSize: 17, color: Colors.black),
         ),
         const SizedBox(height: 16.0),
       ],

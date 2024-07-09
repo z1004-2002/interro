@@ -3,7 +3,7 @@ import 'package:interro/Services/authentication.dart';
 import 'package:interro/Widget/button.dart';
 import 'package:interro/Widget/snackbar.dart';
 import 'package:interro/Widget/text_field.dart';
-import 'package:interro/pages/home.dart';
+import 'package:interro/base.dart';
 import 'package:interro/pages/signup.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stroke_text/stroke_text.dart';
@@ -16,42 +16,33 @@ class LogIn extends StatefulWidget {
 }
 
 class _LogInState extends State<LogIn> {
-  final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  bool isLoading = false;
 
   @override
   void dispose() {
     super.dispose();
-    emailController.dispose();
+    phoneController.dispose();
     passwordController.dispose();
   }
 
 // email and passowrd auth part
   void loginUser() async {
-    setState(() {
-      isLoading = true;
-    });
     // signup user using our authmethod
     String res = await AuthMethod().loginUser(
-        email: emailController.text, password: passwordController.text);
+        phone: phoneController.text, password: passwordController.text);
 
     if (res == "success") {
-      setState(() {
-        isLoading = false;
-      });
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setBool("isAuthenticated", true);
+      prefs.setString("phone", phoneController.text);
       //navigate to the home screen
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => Home(),
+          builder: (context) => Base(),
         ),
       );
     } else {
-      setState(() {
-        isLoading = false;
-      });
       // show error
       showSnackBar(context, res);
     }
@@ -81,9 +72,9 @@ class _LogInState extends State<LogIn> {
               strokeWidth: 5,
             ),
             TextFieldInput(
-              icon: Icons.person,
-              textEditingController: emailController,
-              hintText: 'Email',
+              icon: Icons.phone,
+              textEditingController: phoneController,
+              hintText: 'Phone',
               textInputType: TextInputType.text,
             ),
             TextFieldInput(

@@ -18,6 +18,7 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
   bool isLoading = false;
 
   @override
@@ -25,6 +26,7 @@ class _SignUpState extends State<SignUp> {
     super.dispose();
     emailController.dispose();
     passwordController.dispose();
+    phoneController.dispose();
     nameController.dispose();
   }
 
@@ -36,21 +38,22 @@ class _SignUpState extends State<SignUp> {
     // signup user using our authmethod
     String res = await AuthMethod().signupUser(
       email: emailController.text,
+      phone: phoneController.text,
       password: passwordController.text,
       name: nameController.text,
     );
     // if string return is success, user has been creaded and navigate to next screen other witse show error.
     if (res == "success") {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const LogIn(),
+        ),
+      );
       setState(() {
         isLoading = false;
       });
       showSnackBar(context, res);
       //navigate to the next screen
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => Home(),
-        ),
-      );
     } else {
       setState(() {
         isLoading = false;
@@ -62,71 +65,80 @@ class _SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
         decoration: const BoxDecoration(
           color: Colors.white,
         ),
-        child: SizedBox(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const StrokeText(
-                text: "INTERRO",
-                textStyle: TextStyle(
-                  fontSize: 70,
-                  color: Color.fromARGB(255, 7, 5, 136),
-                  fontFamily: "CadhoToys",
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const StrokeText(
+                  text: "INTERRO",
+                  textStyle: TextStyle(
+                    fontSize: 70,
+                    color: Color.fromARGB(255, 7, 5, 136),
+                    fontFamily: "CadhoToys",
+                  ),
+                  strokeColor: Colors.lightBlue,
+                  strokeWidth: 5,
                 ),
-                strokeColor: Colors.lightBlue,
-                strokeWidth: 5,
-              ),
-              TextFieldInput(
+                TextFieldInput(
                   icon: Icons.person,
                   textEditingController: nameController,
                   hintText: 'Nom',
-                  textInputType: TextInputType.text),
-              TextFieldInput(
+                  textInputType: TextInputType.text,
+                ),
+                TextFieldInput(
+                  icon: Icons.phone,
+                  textEditingController: phoneController,
+                  hintText: 'Numero',
+                  textInputType: TextInputType.text,
+                ),
+                TextFieldInput(
                   icon: Icons.email,
                   textEditingController: emailController,
-                  hintText: 'Numero',
-                  textInputType: TextInputType.text),
-              TextFieldInput(
-                icon: Icons.lock,
-                textEditingController: passwordController,
-                hintText: 'Mot de passe',
-                textInputType: TextInputType.text,
-                isPass: true,
-              ),
-              MyButtons(onTap: signupUser, text: "S'enregistrer"),
-              const SizedBox(height: 50),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    "Vous avez déjà un compte ?",
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const LogIn(),
-                        ),
-                      );
-                    },
-                    child: const Text(
-                      "Connexion",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Color.fromARGB(255, 7, 5, 136)),
+                  hintText: 'Email',
+                  textInputType: TextInputType.text,
+                ),
+                TextFieldInput(
+                  icon: Icons.lock,
+                  textEditingController: passwordController,
+                  hintText: 'Mot de passe',
+                  textInputType: TextInputType.text,
+                  isPass: true,
+                ),
+                MyButtons(onTap: signupUser, text: "S'enregistrer"),
+                const SizedBox(height: 50),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Vous avez déjà un compte ?",
+                      style: TextStyle(color: Colors.grey),
                     ),
-                  )
-                ],
-              )
-            ],
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const LogIn(),
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        "Connexion",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromARGB(255, 7, 5, 136)),
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),
