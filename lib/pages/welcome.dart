@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:interro/constants/constants.dart';
 import 'package:interro/widgets/button.dart';
 import 'package:interro/pages/auth/login.dart';
 import 'package:interro/pages/auth/signup.dart';
@@ -18,7 +19,7 @@ class _WelcomeState extends State<Welcome> {
       body: Container(
         width: double.infinity,
         decoration: const BoxDecoration(
-          color: Color.fromARGB(255, 7, 5, 136),
+          color: secondColor,
         ),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -32,7 +33,7 @@ class _WelcomeState extends State<Welcome> {
                   color: Colors.white,
                   fontFamily: "CadhoToys",
                 ),
-                strokeColor: Colors.lightBlue,
+                strokeColor: thirdColor,
                 strokeWidth: 5,
               ),
               Expanded(
@@ -92,13 +93,13 @@ class _WelcomeState extends State<Welcome> {
           children: [
             Icon(
               icon,
-              color: Colors.white,
+              color: primaryColor,
               size: 30.0,
             ),
             const SizedBox(width: 10.0),
             Text(
               title,
-              style: const TextStyle(fontSize: 30, color: Colors.white),
+              style: const TextStyle(fontSize: 30, color: primaryColor),
             ),
           ],
         ),
@@ -106,7 +107,9 @@ class _WelcomeState extends State<Welcome> {
         Text(
           content,
           style: const TextStyle(
-              fontSize: 17, color: Color.fromARGB(255, 223, 223, 223)),
+            fontSize: 17,
+            color: Color.fromARGB(255, 223, 223, 223),
+          ),
         ),
         const SizedBox(height: 16.0),
       ],

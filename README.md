@@ -2,15 +2,55 @@
 
 A new Flutter project.
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+            // const Text(
+            //   "Congratulation\nYou have successfully Login",
+            //   textAlign: TextAlign.center,
+            //   style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+            // ),
+            // MyButtons(
+            //   onTap: () async {
+            //     SharedPreferences prefs = await SharedPreferences.getInstance();
+            //     prefs.setBool("isAuthenticated", false);
+            //     await FirebaseServices().googleSignOut();
+            //     Navigator.of(context).pushReplacement(
+            //       MaterialPageRoute(
+            //         builder: (context) => const LogIn(),
+            //       ),
+            //     );
+            //   },
+            //   text: "Log Out",
+            // ),
+            Padding(
+              padding: const EdgeInsets.only(
+                bottom: 8,
+                left: 16,
+                right: 16,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      print('setting');
+                    },
+                    child: const Icon(
+                      Icons.settings,
+                      color: secondColor,
+                      size: 40,
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      print("out");
+                    },
+                    child: const Icon(
+                      Icons.exit_to_app_outlined,
+                      size: 40,
+                      color: secondColor,
+                    ),
+                  ),
+                ],
+              ),
+            )
