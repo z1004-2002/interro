@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:interro/pages/base.dart';
-import 'package:interro/pages/home.dart';
+import 'package:interro/base.dart';
 import 'package:interro/pages/welcome.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';

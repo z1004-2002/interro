@@ -9,6 +9,7 @@ class AuthMethod {
 
   Future<String> signupUser({
     required String email,
+    required String phone,
     required String password,
     required String name,
   }) async {
@@ -16,7 +17,8 @@ class AuthMethod {
     try {
       if (email.isNotEmpty ||
           password.isNotEmpty ||
-          name.isNotEmpty) {
+          name.isNotEmpty ||
+          phone.isNotEmpty) {
         // register user in auth with email and password
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
           email: email,
@@ -28,6 +30,7 @@ class AuthMethod {
           'name': name,
           'uid': cred.user!.uid,
           'email': email,
+          'phone': phone,
         });
 
         res = "success";

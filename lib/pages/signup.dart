@@ -18,6 +18,7 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
   bool isLoading = false;
 
   @override
@@ -25,6 +26,7 @@ class _SignUpState extends State<SignUp> {
     super.dispose();
     emailController.dispose();
     passwordController.dispose();
+    phoneController.dispose();
     nameController.dispose();
   }
 
@@ -36,6 +38,7 @@ class _SignUpState extends State<SignUp> {
     // signup user using our authmethod
     String res = await AuthMethod().signupUser(
       email: emailController.text,
+      phone: phoneController.text,
       password: passwordController.text,
       name: nameController.text,
     );
@@ -84,15 +87,23 @@ class _SignUpState extends State<SignUp> {
                 strokeWidth: 5,
               ),
               TextFieldInput(
-                  icon: Icons.person,
-                  textEditingController: nameController,
-                  hintText: 'Nom',
-                  textInputType: TextInputType.text),
+                icon: Icons.person,
+                textEditingController: nameController,
+                hintText: 'Nom',
+                textInputType: TextInputType.text,
+              ),
               TextFieldInput(
-                  icon: Icons.email,
-                  textEditingController: emailController,
-                  hintText: 'Numero',
-                  textInputType: TextInputType.text),
+                icon: Icons.phone,
+                textEditingController: phoneController,
+                hintText: 'Numero',
+                textInputType: TextInputType.text,
+              ),
+              TextFieldInput(
+                icon: Icons.email,
+                textEditingController: emailController,
+                hintText: 'Email',
+                textInputType: TextInputType.text,
+              ),
               TextFieldInput(
                 icon: Icons.lock,
                 textEditingController: passwordController,

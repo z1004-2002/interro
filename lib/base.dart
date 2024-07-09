@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:interro/pages/home.dart';
+import 'package:interro/pages/profil.dart';
+import 'package:stroke_text/stroke_text.dart';
 
 class Base extends StatefulWidget {
   const Base({super.key});
@@ -12,16 +14,26 @@ class _BaseState extends State<Base> {
   int indexPage = 0;
   List pages = [
     Home(),
-    Home(),
-    Home(),
+    Profil(),
   ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         //automaticallyImplyLeading: false,
         //backgroundColor: Color(0x44000000),
         elevation: 0,
+        title: const StrokeText(
+          text: "INTERRO",
+          textStyle: TextStyle(
+            fontSize: 30,
+            color: Color.fromARGB(255, 7, 5, 136),
+            fontFamily: "CadhoToys",
+          ),
+          strokeColor: Colors.lightBlue,
+          strokeWidth: 5,
+        ),
         actions: [],
       ),
       //drawer: const MyDrawer(),
@@ -70,13 +82,6 @@ class _BaseState extends State<Base> {
               BottomNavigationBarItem(
                 icon: Icon(
                   Icons.person,
-                  size: 30,
-                ),
-                label: "",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.settings,
                   size: 30,
                 ),
                 label: "",
