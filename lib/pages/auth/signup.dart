@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:interro/pages/bottom_nav/bottom_nav.dart';
 import 'package:interro/services/authentication.dart';
 import 'package:interro/widgets/button.dart';
 import 'package:interro/widgets/show_snack_bar.dart';
 import 'package:interro/widgets/text_field.dart';
-import 'package:interro/pages/home.dart';
 import 'package:interro/pages/auth/login.dart';
 import 'package:stroke_text/stroke_text.dart';
 
@@ -48,7 +48,7 @@ class _SignUpState extends State<SignUp> {
       //navigate to the next screen
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => const Home(),
+          builder: (context) => const BottomNav(),
         ),
       );
     } else {
@@ -116,7 +116,9 @@ class _SignUpState extends State<SignUp> {
                     child: const Text(
                       "Connexion",
                       style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.white),
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
                   )
                 ],

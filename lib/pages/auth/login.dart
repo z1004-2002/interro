@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:interro/pages/bottom_nav/bottom_nav.dart';
 import 'package:interro/services/authentication.dart';
 import 'package:interro/widgets/button.dart';
 import 'package:interro/widgets/show_snack_bar.dart';
-import 'package:interro/widgets/snackbar.dart';
 import 'package:interro/widgets/text_field.dart';
-import 'package:interro/pages/home.dart';
 import 'package:interro/pages/auth/signup.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stroke_text/stroke_text.dart';
 
+/// Ecran de connexion
 class LogIn extends StatefulWidget {
   const LogIn({super.key});
 
@@ -46,7 +46,7 @@ class _LogInState extends State<LogIn> {
       //navigate to the home screen
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => const Home(),
+          builder: (context) => const BottomNav(),
         ),
       );
     } else {

@@ -10,10 +10,10 @@ import 'package:interro/widgets/show_snack_bar.dart';
 class AddQuestions extends StatefulWidget {
   final Quizz newQuizz;
 
-  const AddQuestions({Key? key, required this.newQuizz}) : super(key: key);
+  const AddQuestions({super.key, required this.newQuizz});
 
   @override
-  _AddQuestionsState createState() => _AddQuestionsState();
+  State<AddQuestions> createState() => _AddQuestionsState();
 }
 
 class _AddQuestionsState extends State<AddQuestions> {

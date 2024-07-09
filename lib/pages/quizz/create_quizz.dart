@@ -29,14 +29,25 @@ class _CreateQuizz extends State<CreateQuizz> {
     _fetchThemes();
   }
 
+  /// charger les thèmes existants
   Future<void> _fetchThemes() async {
     try {
       QuerySnapshot querySnapshot =
-          await FirebaseFirestore.instance.collection('themes').get();
+          await FirebaseFirestore.instance.collection('quizzes').get();
+
+      List<String> fetchedThemes = [];
+      for (var doc in querySnapshot.docs) {
+        var themeData = doc['theme'];
+        if (themeData != null && themeData is Map<String, dynamic>) {
+          String? themeName = themeData['name'] as String?;
+          if (themeName != null && !fetchedThemes.contains(themeName)) {
+            fetchedThemes.add(themeName);
+          }
+        }
+      }
 
       setState(() {
-        _themes =
-            querySnapshot.docs.map((doc) => doc['name'] as String).toList();
+        _themes = fetchedThemes;
       });
     } catch (e) {
       print('Erreur lors de la récupération des thèmes: $e');
@@ -58,7 +69,6 @@ class _CreateQuizz extends State<CreateQuizz> {
         questions: [],
       );
 
-      // Naviguer vers la nouvelle page avec les informations du quiz
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) => AddQuestions(newQuizz: newQuizz),
