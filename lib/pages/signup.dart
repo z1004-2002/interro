@@ -3,7 +3,6 @@ import 'package:interro/Services/authentication.dart';
 import 'package:interro/Widget/button.dart';
 import 'package:interro/Widget/snackbar.dart';
 import 'package:interro/Widget/text_field.dart';
-import 'package:interro/pages/home.dart';
 import 'package:interro/pages/login.dart';
 import 'package:stroke_text/stroke_text.dart';
 
@@ -38,6 +37,7 @@ class _SignUpState extends State<SignUp> {
     // signup user using our authmethod
     String res = await AuthMethod().signupUser(
       email: emailController.text,
+      phone: phoneController.text,
       phone: phoneController.text,
       password: passwordController.text,
       name: nameController.text,

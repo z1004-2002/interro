@@ -10,15 +10,13 @@ class AuthMethod {
   Future<String> signupUser({
     required String email,
     required String phone,
+    required String phone,
     required String password,
     required String name,
   }) async {
     String res = "Some error Occurred";
     try {
-      if (email.isNotEmpty ||
-          password.isNotEmpty ||
-          name.isNotEmpty ||
-          phone.isNotEmpty) {
+      if (email.isNotEmpty || password.isNotEmpty || name.isNotEmpty) {
         // register user in auth with email and password
 
         // add user to your  firestore database
