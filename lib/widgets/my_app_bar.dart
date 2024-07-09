@@ -17,7 +17,6 @@ AppBar myAppBar(
         fontSize: 18,
       ),
     ),
-    backgroundColor: Colors.transparent,
     elevation: 0,
     leading: implyLeading == true
         ? Transform.scale(

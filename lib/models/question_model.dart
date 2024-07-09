@@ -39,6 +39,20 @@ class Question {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'answer': answer,
+      'prop2': prop2,
+      'prop3': prop3,
+      'prop4': prop4,
+      'image': image,
+      'createdAt': createdAt?.toString(),
+      'updatedAt': updatedAt?.toString(),
+    };
+  }
+
   List<String> get getPropositions {
     return [answer!, prop2!, prop3!, prop4!];
   }

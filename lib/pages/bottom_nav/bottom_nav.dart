@@ -6,8 +6,6 @@ import 'package:interro/pages/settings/settings_screen.dart';
 
 /// barre de navigation
 class BottomNav extends StatefulWidget {
-  static String routeName = "/BottomNav";
-
   const BottomNav({super.key});
 
   @override

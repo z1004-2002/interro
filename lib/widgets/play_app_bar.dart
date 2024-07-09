@@ -18,7 +18,6 @@ AppBar playAppBar(
         fontSize: 18,
       ),
     ),
-    backgroundColor: Colors.transparent,
     elevation: 0,
     leading: Row(
       children: [

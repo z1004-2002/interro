@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:interro/constants/constants.dart';
+import 'package:interro/models/quizz_model.dart';
+import 'package:interro/models/theme_model.dart';
+import 'package:interro/pages/quizz/add_questions.dart';
+import 'package:interro/widgets/default_button.dart';
 
+/// Ecran pour créer un quizz
 class CreateQuizz extends StatefulWidget {
   const CreateQuizz({super.key});
 
@@ -10,24 +16,54 @@ class CreateQuizz extends StatefulWidget {
 
 class _CreateQuizz extends State<CreateQuizz> {
   final _formKey = GlobalKey<FormState>();
-  final _quizzController = TextEditingController();
-  final _res1Controller = TextEditingController();
-  final _res2Controller = TextEditingController();
-  final _res3Controller = TextEditingController();
-  final _res4Controller = TextEditingController();
-  final _responseController = TextEditingController();
+  final _nameController = TextEditingController();
+  final _descriptionController = TextEditingController();
+  final _themeController = TextEditingController();
 
-  void _saveQuiz() async {
-    if (_formKey.currentState!.validate()) {
-      await FirebaseFirestore.instance.collection('quizzes').add({
-        'quizz': _quizzController.text,
-        'res1': _res1Controller.text,
-        'res2': _res2Controller.text,
-        'res3': _res3Controller.text,
-        'res4': _res4Controller.text,
-        'response': _responseController.text,
+  String? _selectedTheme;
+  List<String> _themes = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchThemes();
+  }
+
+  Future<void> _fetchThemes() async {
+    try {
+      QuerySnapshot querySnapshot =
+          await FirebaseFirestore.instance.collection('themes').get();
+
+      setState(() {
+        _themes =
+            querySnapshot.docs.map((doc) => doc['name'] as String).toList();
       });
-      Navigator.of(context).pop();
+    } catch (e) {
+      print('Erreur lors de la récupération des thèmes: $e');
+    }
+  }
+
+  void _saveQuiz() {
+    if (_formKey.currentState!.validate()) {
+      Quizz newQuizz = Quizz(
+        name: _nameController.text,
+        description: _descriptionController.text,
+        theme: ThemeModel(
+          name: _themeController.text != ''
+              ? _themeController.text
+              : _selectedTheme,
+        ),
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+        questions: [],
+      );
+
+      // Naviguer vers la nouvelle page avec les informations du quiz
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => AddQuestions(newQuizz: newQuizz),
+        ),
+      );
     }
   }
 
@@ -37,6 +73,16 @@ class _CreateQuizz extends State<CreateQuizz> {
       appBar: AppBar(
         title: const Text('Créer un nouveau quiz'),
       ),
+      bottomSheet: Container(
+        color: primaryColor,
+        padding: bottomSheetPadding,
+        child: DefaultButton(
+          text: "Suivant",
+          press: () {
+            _saveQuiz();
+          },
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -44,69 +90,50 @@ class _CreateQuizz extends State<CreateQuizz> {
           child: ListView(
             children: [
               TextFormField(
-                controller: _quizzController,
-                decoration: const InputDecoration(labelText: 'Question'),
+                controller: _nameController,
+                decoration: const InputDecoration(labelText: 'Nom'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Veuillez entrer une question';
+                    return 'Veuillez entrer le nom du quizz';
                   }
                   return null;
                 },
               ),
               TextFormField(
-                controller: _res1Controller,
-                decoration: const InputDecoration(labelText: 'Proposition 1'),
+                controller: _descriptionController,
+                decoration: const InputDecoration(labelText: 'Description'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Veuillez entrer la proposition 1';
+                    return 'Veuillez entrer une description';
                   }
                   return null;
+                },
+              ),
+              DropdownButtonFormField(
+                decoration: const InputDecoration(labelText: 'Thème'),
+                value: _selectedTheme,
+                items: _themes.map((String theme) {
+                  return DropdownMenuItem(
+                    value: theme,
+                    child: Text(theme),
+                  );
+                }).toList(),
+                onChanged: (String? value) {
+                  setState(() {
+                    _selectedTheme = value;
+                    _themeController.text = value ?? '';
+                  });
                 },
               ),
               TextFormField(
-                controller: _res2Controller,
-                decoration: const InputDecoration(labelText: 'Proposition 2'),
+                controller: _themeController,
+                decoration: const InputDecoration(labelText: 'Nouveau thème'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Veuillez entrer la proposition 2';
+                    return 'Veuillez entrer un thème';
                   }
                   return null;
                 },
-              ),
-              TextFormField(
-                controller: _res3Controller,
-                decoration: const InputDecoration(labelText: 'Proposition 3'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Veuillez entrer la proposition 3';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _res4Controller,
-                decoration: const InputDecoration(labelText: 'Proposition 4'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Veuillez entrer la proposition 4';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _responseController,
-                decoration: const InputDecoration(labelText: 'Bonne réponse'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Veuillez entrer la bonne réponse';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 20.0),
-              ElevatedButton(
-                onPressed: _saveQuiz,
-                child: const Text('Enregistrer'),
               ),
             ],
           ),

@@ -19,11 +19,13 @@ class _MyQuizzScreenState extends State<MyQuizzScreen> {
         implyLeading: false,
         context: context,
       ),
-      body: SingleChildScrollView(
-        child:
-            Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          Placeholder(),
-        ]),
+      body: const SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Placeholder(),
+          ],
+        ),
       ),
     );
   }

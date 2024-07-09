@@ -26,4 +26,14 @@ class ThemeModel {
           : null,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'description': description,
+      'createdAt': createdAt?.toString(),
+      'updatedAt': updatedAt?.toString(),
+    };
+  }
 }

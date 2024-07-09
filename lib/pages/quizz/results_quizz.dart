@@ -5,6 +5,7 @@ import 'package:interro/pages/bottom_nav/bottom_nav.dart';
 import 'package:interro/widgets/default_button.dart';
 import 'package:interro/widgets/my_app_bar.dart';
 
+/// Récapitulatif du quizz
 class ResultsQuizz extends StatefulWidget {
   final Quizz quizz;
 

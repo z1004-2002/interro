@@ -48,6 +48,7 @@ dependencies:
   stroke_text: any
   provider: any
   share_plus: ^9.0.0
+  flutter_snackbar_plus: ^0.5.1
 
 dev_dependencies:
   flutter_test:

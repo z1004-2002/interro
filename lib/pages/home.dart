@@ -16,10 +16,12 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> with TickerProviderStateMixin {
-  /// liste des quizz
-  late CollectionReference quizzes;
+class _HomeState extends State<Home> {
   late List<Quizz> quizzesTest2;
+
+  /// liste des quizz
+  List<Quizz> quizzes = [];
+  bool isLoading = true;
 
   // recherche utilisateur
   final TextEditingController _searchController = TextEditingController();
@@ -35,7 +37,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     _searchController.addListener(_performSearch);
-    quizzes = FirebaseFirestore.instance.collection("quizzes");
+    _fetchQuizzes();
     quizzesTest2 = quizzesTest;
   }
 
@@ -44,6 +46,27 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     _searchController.removeListener(_performSearch);
     _searchController.dispose();
     super.dispose();
+  }
+
+  Future<void> _fetchQuizzes() async {
+    try {
+      QuerySnapshot querySnapshot =
+          await FirebaseFirestore.instance.collection('quizzes').get();
+
+      List<Quizz> fetchedQuizzes = querySnapshot.docs.map((doc) {
+        return Quizz.fromJson(doc.data() as Map<String, dynamic>);
+      }).toList();
+
+      setState(() {
+        quizzes = fetchedQuizzes;
+        isLoading = false;
+      });
+    } catch (e) {
+      print('Erreur lors de la récupération des quizz: $e');
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   bool _isQuizzMatchingSearch(Quizz quizz) {
@@ -75,7 +98,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         ),
         padding: const EdgeInsets.only(top: 40, left: 15, right: 15),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const Column(
               children: [
@@ -114,20 +136,61 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                 ],
               ),
             ),
-            Expanded(
-              child: ListView.builder(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                itemCount: quizzesTest2.length,
-                itemBuilder: (context, index) {
-                  final quizz = quizzesTest2[index];
-                  if (_isQuizzMatchingSearch(quizz)) {
-                    return QuizzBlock(quizz: quizz);
-                  } else {
-                    return Container();
-                  }
-                },
-              ),
-            ),
+            // Expanded(
+            //   child: StreamBuilder(
+            //     stream: quizzes.snapshots(),
+            //     builder: (context, AsyncSnapshot<QuerySnapshot> streamSnap) {
+            //       if (streamSnap.hasError) {
+            //         return Center(child: Text('Erreur: ${streamSnap.error}'));
+            //       }
+
+            //       if (streamSnap.connectionState == ConnectionState.waiting) {
+            //         return const Center(child: CircularProgressIndicator());
+            //       }
+
+            //       final data = streamSnap.requireData;
+            //       final quizDocument = data.docs.last;
+            //       print(quizDocument.data());
+
+            //       return ListView.builder(
+            //         itemCount: streamSnap.data!.docs.length,
+            //         itemBuilder: (context, index) {
+            //           final DocumentSnapshot documentSnapshot =
+            //               streamSnap.data!.docs[index];
+            //           final quizDocument =
+            //               documentSnapshot.data() as Map<String, dynamic>;
+            //           return Material(
+            //             child: ListTile(
+            //               title: Text(
+            //                 quizDocument['name'] ?? "rien",
+            //                 style: const TextStyle(
+            //                   fontWeight: FontWeight.bold,
+            //                   fontSize: 20,
+            //                 ),
+            //               ),
+            //             ),
+            //           );
+            //         },
+            //       );
+            //     },
+            //   ),
+            // ),
+            isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : Expanded(
+                    child: ListView.builder(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      itemCount: quizzes.length,
+                      itemBuilder: (context, index) {
+                        final quizz = quizzes[index];
+                        if (_isQuizzMatchingSearch(quizz)) {
+                          return QuizzBlock(quizz: quizz);
+                        } else {
+                          return Container();
+                        }
+                      },
+                    ),
+                  ),
           ],
         ),
       ),
