@@ -1,9 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:interro/Services/google_auth.dart';
 import 'package:interro/pages/create_quizz.dart';
-import 'package:interro/pages/login.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stroke_text/stroke_text.dart';
 
 class Home extends StatefulWidget {
@@ -14,19 +11,35 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  late CollectionReference quizz;
+  late CollectionReference quizzes;
+
   @override
   void initState() {
-    quizz = FirebaseFirestore.instance.collection("quizzes");
+    quizzes = FirebaseFirestore.instance.collection("quizzes");
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        elevation: 40,
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => CreateQuizz(),
+            ),
+          );
+        },
+        tooltip: 'Créer un nouveau quiz',
+        child: const Icon(Icons.add),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: Container(
         width: double.infinity,
-        decoration: const BoxDecoration(),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -57,44 +70,42 @@ class _HomeState extends State<Home> {
                 ],
               ),
             ),
-            // StreamBuilder(
-            //   stream: quizz.snapshots(),
-            //   builder: (context, AsyncSnapshot<QuerySnapshot> streamSnap) {
-            //     if (streamSnap.hasData) {
-            //       return ListView.builder(
-            //         itemCount: streamSnap.data!.docs.length,
-            //         itemBuilder: (context, index) {
-            //           final DocumentSnapshot documentSnapshot =
-            //               streamSnap.data!.docs[index];
-            //           return Material(
-            //             child: ListTile(
-            //               title: Text(
-            //                 documentSnapshot["theme"],
-            //                 style: const TextStyle(
-            //                   fontWeight: FontWeight.bold,
-            //                   fontSize: 20,
-            //                 ),
-            //               ),
-            //             ),
-            //           );
-            //         },
-            //       );
-            //     }
-            //     return const Center(
-            //       child: Text("data"),
-            //     );
-            //   },
-            // ),
-            FloatingActionButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => CreateQuizz(),
-                  ),
-                );
-              },
-              tooltip: 'Créer un nouveau quiz',
-              child: const Icon(Icons.add),
+            Expanded(
+              child: StreamBuilder(
+                stream: quizzes.snapshots(),
+                builder: (context, AsyncSnapshot<QuerySnapshot> streamSnap) {
+                  if (streamSnap.hasError) {
+                    return Center(child: Text('Erreur: ${streamSnap.error}'));
+                  }
+
+                  if (streamSnap.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  ///final quizDocument = data.docs[0];
+                  //print(quizDocument.data());
+
+                  return ListView.builder(
+                    itemCount: streamSnap.data!.docs.length,
+                    itemBuilder: (context, index) {
+                      final DocumentSnapshot documentSnapshot =
+                          streamSnap.data!.docs[index];
+                      final quizDocument = documentSnapshot.data();
+                      return Material(
+                        child: ListTile(
+                          title: Text(
+                            quizDocument.toString(),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
             ),
 
             // const Text(
@@ -115,46 +126,6 @@ class _HomeState extends State<Home> {
             //   },
             //   text: "Log Out",
             // ),
-            Padding(
-              padding: const EdgeInsets.only(
-                bottom: 8,
-                left: 16,
-                right: 16,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      print('setting');
-                    },
-                    child: const Icon(
-                      Icons.settings,
-                      color: Color.fromARGB(255, 7, 5, 136),
-                      size: 40,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () async {
-                      SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-                      prefs.setBool("isAuthenticated", false);
-                      await FirebaseServices().googleSignOut();
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) => const LogIn(),
-                        ),
-                      );
-                    },
-                    child: const Icon(
-                      Icons.exit_to_app_outlined,
-                      size: 40,
-                      color: Color.fromARGB(255, 7, 5, 136),
-                    ),
-                  ),
-                ],
-              ),
-            )
           ],
         ),
       ),

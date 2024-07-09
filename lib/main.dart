@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:interro/pages/base.dart';
 import 'package:interro/pages/home.dart';
 import 'package:interro/pages/welcome.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: isAuthenticated ? const Home() : const Welcome(),
+      home: isAuthenticated ? Base() : Welcome(),
     );
   }
 }

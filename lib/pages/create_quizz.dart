@@ -17,7 +17,7 @@ class _CreateQuizz extends State<CreateQuizz> {
   final _res3Controller = TextEditingController();
   final _res4Controller = TextEditingController();
   final _responseController = TextEditingController();
-
+  List<Object> ma_liste = [];
   void _saveQuiz() async {
     if (_formKey.currentState!.validate()) {
       await FirebaseFirestore.instance.collection('quizzes').add({
@@ -120,6 +120,25 @@ class _CreateQuizz extends State<CreateQuizz> {
                 },
               ),
               const SizedBox(height: 20.0),
+              // ElevatedButton(
+              //   onPressed: () {
+              //     ma_liste.add({
+              //       "question": _questionController.text,
+              //       'res1': _res1Controller.text,
+              //       'res2': _res2Controller.text,
+              //       'res3': _res3Controller.text,
+              //       'res4': _res4Controller.text,
+              //       'response': _responseController.text,
+              //     });
+              //     _questionController.text = "";
+              //     _res1Controller.text = "";
+              //     _res2Controller.text = "";
+              //     _res3Controller.text = "";
+              //     _res4Controller.text = "";
+              //     _responseController.text = "";
+              //   },
+              //   child: const Text('Ajouter la question'),
+              // ),
               ElevatedButton(
                 onPressed: _saveQuiz,
                 child: const Text('Enregistrer'),
