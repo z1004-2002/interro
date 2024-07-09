@@ -38,4 +38,8 @@ class Question {
           : null,
     );
   }
+
+  List<String> get getPropositions {
+    return [answer!, prop2!, prop3!, prop4!];
+  }
 }

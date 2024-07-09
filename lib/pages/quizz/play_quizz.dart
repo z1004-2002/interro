@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:interro/models/question_model.dart';
 import 'package:interro/pages/quizz/components/answer_choices.dart';
+import 'package:interro/pages/quizz/results_quizz.dart';
 import 'package:interro/widgets/default_button.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:interro/constants/constants.dart';
@@ -24,22 +26,97 @@ class _PlayQuizzScreenState extends State<PlayQuizzScreen> {
   /// Index de la question actuelle à afficher
   int currentIndex = 0;
 
-  /// score du joueur
-  int userScore = 0;
+  /// texte du boouton de soumission
+  String buttonText = 'Valider';
+
+  /// liste de propositions
+  List<String> propositions = [];
+
+  /// réponse de l'utilisateur
+  late String userAnswer = '';
+
+  /// Texte à afficher pour le résultat
+  String correctAnswerText = '';
+
+  /// note du joueur
+  int userNote = 0;
+
+  // temps de jeu du quizz
+  late DateTime startedAt;
+  late DateTime endedAt;
+
+  Color successColor = Colors.green;
+  Color failColor = Colors.red;
 
   // timer
   final GlobalKey<CircularTimerState> _timerKey =
       GlobalKey<CircularTimerState>();
 
+  @override
+  void initState() {
+    super.initState();
+
+    startedAt = DateTime.now();
+  }
+
   /// vérifie la réponse du joueur
   void checkAnswer() {
     // Arrête le timer
     _timerKey.currentState?.stopTimer();
-    setState(() {});
+
+    List<Question>? questions = widget.quizz.questions;
+
+    String goodAnswer = questions![currentIndex].answer!;
+    bool isCorrect = userAnswer == goodAnswer;
+
+    setState(() {
+      if (isCorrect) {
+        print("correct : $userAnswer = $goodAnswer");
+        correctAnswerText = isCorrect ? '✅ : $goodAnswer' : '❌ : $goodAnswer';
+        userNote++;
+      } else {
+        print("incorrect : $userAnswer != $goodAnswer");
+      }
+      buttonText = 'Suivant';
+    });
+
+    if (currentIndex >= questions.length - 1) {
+      gameInProgress = false;
+      buttonText = 'Afficher les résultats';
+      endedAt = DateTime.now();
+    }
   }
 
   /// Passe à la question suivante
-  void goToNextQuestion() {}
+  void goToNextQuestion() {
+    List<Question>? questions = widget.quizz.questions;
+
+    if (currentIndex < questions!.length - 1) {
+      setState(() {
+        currentIndex++;
+        correctAnswerText = '';
+        buttonText = 'Valider';
+      });
+      _timerKey.currentState?.startTimer();
+    } else {
+      // Si c'est la dernière question, on arrete le timer et le jeu
+      _timerKey.currentState?.stopTimer();
+      setState(() {
+        gameInProgress = false;
+        buttonText = 'Afficher les résultats';
+        endedAt = DateTime.now();
+      });
+    }
+  }
+
+  /// afficher les résultats du quizz
+  void displayResults() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => ResultsQuizz(quizz: widget.quizz),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,27 +141,31 @@ class _PlayQuizzScreenState extends State<PlayQuizzScreen> {
           color: primaryColor,
           padding: bottomSheetPadding,
           child: DefaultButton(
-            text: "Valider",
-            press: () {},
+            text: buttonText,
+            press: () => gameInProgress
+                ? correctAnswerText.isEmpty
+                    ? checkAnswer()
+                    : goToNextQuestion()
+                : displayResults(),
           ),
         ),
         body: SingleChildScrollView(
           padding: bodyPadding,
           child: Column(
             children: [
-              // score timining vies
+              // note timining
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // score
+                  // note
                   Text(
-                    "Note : $userScore / $maxQuestions",
+                    "Note : $userNote / $maxQuestions",
                     style: const TextStyle(fontSize: 17),
                   ),
                   // timing
                   CircularTimer(
                     key: _timerKey,
-                    durationSeconds: 120,
+                    durationSeconds: 10,
                     onTimerFinish: () {
                       setState(() {
                         checkAnswer();
@@ -117,9 +198,22 @@ class _PlayQuizzScreenState extends State<PlayQuizzScreen> {
               const SizedBox(height: 30),
               // choix de réponses
               AnswersChoices(
-                choices: ['Paris', 'London', 'Berlin', 'Madrid'],
+                key: ValueKey(currentIndex),
+                choices: widget.quizz.questions![currentIndex].getPropositions,
                 onChanged: (value) {
-                  print('Selected choice: $value');
+                  setState(() {
+                    userAnswer = value!;
+                  });
+                },
+                choiceColors: {
+                  widget.quizz.questions![currentIndex].getPropositions[0]:
+                      successColor,
+                  widget.quizz.questions![currentIndex].getPropositions[1]:
+                      failColor,
+                  widget.quizz.questions![currentIndex].getPropositions[2]:
+                      failColor,
+                  widget.quizz.questions![currentIndex].getPropositions[3]:
+                      failColor,
                 },
               ),
             ],

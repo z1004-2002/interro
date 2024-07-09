@@ -8,7 +8,7 @@ void stopQuizzDialog(BuildContext context) {
     builder: (BuildContext context) => ConfirmationDialog(
       title: "Abandonner le quizz",
       content: "Êtes-vous sûr de mettre fin au quizz ?",
-      confirmText: "Arrêter",
+      confirmText: "Abandonner",
       cancelText: "Continuer",
       onPressed: () => Navigator.of(context).push(
         MaterialPageRoute(
