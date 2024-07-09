@@ -6,7 +6,7 @@ import 'package:interro/models/user_model.dart';
 final List<Quizz> quizzesTest = [
   Quizz(
     id: 1,
-    name: 'Quizz 1 zefiozef ozigf zoifhzo kjcbez fzuhu hzpgfzefz',
+    name: 'Equations de Maxwell',
     description: 'Description for Quizz 1 hfoai haf oiahf azfihaf a',
     theme: ThemeModel(name: 'Science'),
     image: 'https://example.com/image1.png',

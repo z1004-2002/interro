@@ -3,24 +3,27 @@ import 'package:interro/constants/constants.dart';
 
 class AnswersChoices extends StatefulWidget {
   final List<String> choices;
-  final Map<String, Color>? choiceColors;
-  final bool answered;
-  final Function(String?) onChanged;
+  final ValueChanged<String?> onChanged;
+  final Map<String, Color> choiceColors;
+  final bool isAnswerChecked;
+  final String correctAnswer;
+  final String? selectedChoice;
 
   const AnswersChoices({
     super.key,
     required this.choices,
-    this.answered = false,
     required this.onChanged,
-    this.choiceColors,
+    required this.choiceColors,
+    required this.isAnswerChecked,
+    required this.correctAnswer,
+    this.selectedChoice,
   });
 
   @override
-  State<AnswersChoices> createState() => _AnswersChoicesState();
+  State<AnswersChoices> createState() => AnswersChoicesState();
 }
 
-class _AnswersChoicesState extends State<AnswersChoices> {
-  String? _selectedChoice;
+class AnswersChoicesState extends State<AnswersChoices> {
   late List<String> shuffledChoices;
 
   @override
@@ -32,8 +35,8 @@ class _AnswersChoicesState extends State<AnswersChoices> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       decoration: const BoxDecoration(
-        // color: Colors.green,
         borderRadius: BorderRadius.all(
           Radius.circular(10),
         ),
@@ -42,27 +45,30 @@ class _AnswersChoicesState extends State<AnswersChoices> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: shuffledChoices.map((choice) {
           return RadioListTile(
-            title: Container(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-              decoration: BoxDecoration(
-                color: widget.answered
-                    ? widget.choiceColors![choice]
-                    : Colors.transparent,
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(10),
-                ),
+            title: Text(
+              choice,
+              style: TextStyle(
+                color: widget.isAnswerChecked
+                    ? (choice == widget.selectedChoice
+                        ? (choice == widget.correctAnswer
+                            ? successColor
+                            : failColor)
+                        : (choice == widget.correctAnswer
+                            ? successColor
+                            : null))
+                    : null,
               ),
-              child: Text(choice),
             ),
             value: choice,
-            activeColor: thirdColor,
-            groupValue: _selectedChoice,
-            onChanged: (String? value) {
-              setState(() {
-                _selectedChoice = value;
-              });
-              widget.onChanged(value);
-            },
+            groupValue: widget.selectedChoice,
+            onChanged: widget.isAnswerChecked
+                ? null
+                : (String? value) {
+                    widget.onChanged(value);
+                  },
+            activeColor: widget.isAnswerChecked
+                ? (choice == widget.correctAnswer ? successColor : failColor)
+                : null,
           );
         }).toList(),
       ),

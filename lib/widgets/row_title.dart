@@ -20,23 +20,29 @@ class RowTitle extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Flexible(
-          child: Text(
-            title,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: secondColor,
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              title,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: secondColor,
+              ),
+              softWrap: true,
             ),
-            textAlign: TextAlign.end,
-            softWrap: true,
           ),
         ),
+        const SizedBox(width: 10),
         Flexible(
-          child: Text(
-            subTitle ?? '',
-            style: const TextStyle(fontSize: 14),
-            textAlign: TextAlign.start,
-            softWrap: true,
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              subTitle ?? '',
+              style: const TextStyle(fontSize: 14),
+              textAlign: TextAlign.start,
+              softWrap: true,
+            ),
           ),
         ),
       ],

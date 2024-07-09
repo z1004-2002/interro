@@ -5,6 +5,8 @@ import 'package:interro/pages/quizz/play_quizz.dart';
 import 'package:interro/widgets/default_button.dart';
 import 'package:interro/widgets/my_app_bar.dart';
 import 'package:interro/widgets/row_title.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class DetailsQuizzScreen extends StatefulWidget {
   final Quizz quizz;
@@ -17,7 +19,17 @@ class DetailsQuizzScreen extends StatefulWidget {
 
 class _DetailsQuizzScreenState extends State<DetailsQuizzScreen> {
   @override
+  void initState() {
+    super.initState();
+    initializeDateFormatting('fr_FR', null).then((_) {
+      setState(() {});
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final DateFormat formatter = DateFormat("d MMMM yyyy 'à' HH'h'mm", 'fr_FR');
+
     return Scaffold(
       backgroundColor: primaryColor,
       appBar: myAppBar(
@@ -46,44 +58,42 @@ class _DetailsQuizzScreenState extends State<DetailsQuizzScreen> {
               title: "Nom",
               subTitle: widget.quizz.name,
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            const SizedBox(height: 20),
             RowTitle(
               title: "Description",
               subTitle: widget.quizz.description,
             ),
-            const SizedBox(
-              height: 20,
+            const SizedBox(height: 20),
+            RowTitle(
+              title: "Thème",
+              subTitle: widget.quizz.theme!.name,
             ),
+            const SizedBox(height: 20),
             RowTitle(
               title: "Nombre de questions",
               subTitle: "${widget.quizz.questions!.length}",
             ),
-            const SizedBox(
-              height: 20,
+            const SizedBox(height: 20),
+            const RowTitle(
+              title: "Timing",
+              subTitle: "3 min / question",
             ),
-            RowTitle(
+            const SizedBox(height: 20),
+            const RowTitle(
               title: "Créé par",
-              subTitle: "${widget.quizz.name}",
+              subTitle: "Blanche Audrey",
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            const SizedBox(height: 20),
             RowTitle(
               title: "Créé le",
-              subTitle: "${widget.quizz.createdAt}",
+              subTitle: formatter.format(widget.quizz.createdAt!),
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            const SizedBox(height: 20),
             RowTitle(
               title: "Mis à jour le",
-              subTitle: "${widget.quizz.updatedAt}",
+              subTitle: formatter.format(widget.quizz.updatedAt!),
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            const SizedBox(height: 20),
           ],
         ),
       ),

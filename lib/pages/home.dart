@@ -4,7 +4,7 @@ import 'package:interro/constants/constants.dart';
 import 'package:interro/models/quizz_model.dart';
 import 'package:interro/pages/quizz/components/quizz_block.dart';
 import 'package:interro/pages/quizz/create_quizz.dart';
-import 'package:interro/pages/settings/components/quizzes_test.dart';
+import 'package:interro/pages/quizz/components/quizzes_test.dart';
 import 'package:interro/widgets/search_field.dart';
 import 'package:stroke_text/stroke_text.dart';
 
@@ -116,7 +116,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             ),
             Expanded(
               child: ListView.builder(
-                padding: EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 itemCount: quizzesTest2.length,
                 itemBuilder: (context, index) {
                   final quizz = quizzesTest2[index];

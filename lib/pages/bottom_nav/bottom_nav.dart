@@ -19,7 +19,7 @@ class _BottomNavState extends State<BottomNav> {
   final PageController _pageController = PageController();
   int _selectedIndex = 0;
 
-  // Changer de page avec une animation
+  /// Changer de page avec une animation
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;

@@ -53,7 +53,6 @@ class _SearchFieldState extends State<SearchField> {
               hintStyle: const TextStyle(
                 color: greyColor,
               ),
-              border: InputBorder.none,
               contentPadding: const EdgeInsets.symmetric(horizontal: 16),
             ),
             onChanged: (_) {

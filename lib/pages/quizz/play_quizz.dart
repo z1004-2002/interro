@@ -35,8 +35,13 @@ class _PlayQuizzScreenState extends State<PlayQuizzScreen> {
   /// réponse de l'utilisateur
   late String userAnswer = '';
 
+  bool isAnswerChecked = false;
+
   /// Texte à afficher pour le résultat
   String correctAnswerText = '';
+
+  // timing
+  int timing = 10;
 
   /// note du joueur
   int userNote = 0;
@@ -45,9 +50,6 @@ class _PlayQuizzScreenState extends State<PlayQuizzScreen> {
   late DateTime startedAt;
   late DateTime endedAt;
 
-  Color successColor = Colors.green;
-  Color failColor = Colors.red;
-
   // timer
   final GlobalKey<CircularTimerState> _timerKey =
       GlobalKey<CircularTimerState>();
@@ -55,7 +57,6 @@ class _PlayQuizzScreenState extends State<PlayQuizzScreen> {
   @override
   void initState() {
     super.initState();
-
     startedAt = DateTime.now();
   }
 
@@ -70,13 +71,11 @@ class _PlayQuizzScreenState extends State<PlayQuizzScreen> {
     bool isCorrect = userAnswer == goodAnswer;
 
     setState(() {
+      isAnswerChecked = true;
       if (isCorrect) {
-        print("correct : $userAnswer = $goodAnswer");
         correctAnswerText = isCorrect ? '✅ : $goodAnswer' : '❌ : $goodAnswer';
         userNote++;
-      } else {
-        print("incorrect : $userAnswer != $goodAnswer");
-      }
+      } else {}
       buttonText = 'Suivant';
     });
 
@@ -96,6 +95,8 @@ class _PlayQuizzScreenState extends State<PlayQuizzScreen> {
         currentIndex++;
         correctAnswerText = '';
         buttonText = 'Valider';
+
+        isAnswerChecked = false;
       });
       _timerKey.currentState?.startTimer();
     } else {
@@ -122,6 +123,9 @@ class _PlayQuizzScreenState extends State<PlayQuizzScreen> {
   Widget build(BuildContext context) {
     /// nombre de questions du quizz
     int maxQuestions = widget.quizz.questions!.length;
+
+    List<String> propositions =
+        widget.quizz.questions![currentIndex].getPropositions;
 
     return PopScope(
       canPop: false,
@@ -165,7 +169,7 @@ class _PlayQuizzScreenState extends State<PlayQuizzScreen> {
                   // timing
                   CircularTimer(
                     key: _timerKey,
-                    durationSeconds: 10,
+                    durationSeconds: timing,
                     onTimerFinish: () {
                       setState(() {
                         checkAnswer();
@@ -199,22 +203,21 @@ class _PlayQuizzScreenState extends State<PlayQuizzScreen> {
               // choix de réponses
               AnswersChoices(
                 key: ValueKey(currentIndex),
-                choices: widget.quizz.questions![currentIndex].getPropositions,
+                choices: propositions,
                 onChanged: (value) {
                   setState(() {
                     userAnswer = value!;
                   });
                 },
                 choiceColors: {
-                  widget.quizz.questions![currentIndex].getPropositions[0]:
-                      successColor,
-                  widget.quizz.questions![currentIndex].getPropositions[1]:
-                      failColor,
-                  widget.quizz.questions![currentIndex].getPropositions[2]:
-                      failColor,
-                  widget.quizz.questions![currentIndex].getPropositions[3]:
-                      failColor,
+                  propositions[0]: successColor,
+                  propositions[1]: failColor,
+                  propositions[2]: failColor,
+                  propositions[3]: failColor,
                 },
+                isAnswerChecked: isAnswerChecked,
+                correctAnswer: widget.quizz.questions![currentIndex].answer!,
+                selectedChoice: userAnswer,
               ),
             ],
           ),

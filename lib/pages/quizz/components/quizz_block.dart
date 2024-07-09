@@ -23,11 +23,23 @@ class QuizzBlock extends StatelessWidget {
         children: [
           Container(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            decoration: const BoxDecoration(
-              color: thirdColor,
-              borderRadius: BorderRadius.all(
-                Radius.circular(10),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [thirdColor, purpleColor],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
               ),
+              borderRadius: const BorderRadius.all(
+                Radius.circular(15),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  spreadRadius: 2,
+                  blurRadius: 5,
+                  offset: const Offset(0, 3),
+                ),
+              ],
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -39,15 +51,18 @@ class QuizzBlock extends StatelessWidget {
                       Text(
                         quizz!.name!,
                         style: const TextStyle(
-                          color: primaryColor,
+                          color: Colors.white,
                           fontWeight: FontWeight.bold,
+                          fontSize: 18,
                         ),
                         softWrap: true,
                       ),
+                      const SizedBox(height: 5),
                       Text(
                         quizz!.description!,
                         style: const TextStyle(
-                          color: primaryColor,
+                          color: Colors.white70,
+                          fontSize: 14,
                         ),
                         softWrap: true,
                       ),
@@ -57,14 +72,27 @@ class QuizzBlock extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("${quizz!.questions!.length} questions"),
-                    const Text("12 min"),
+                    Text(
+                      "${quizz!.questions!.length} questions",
+                      style: const TextStyle(
+                        color: primaryColor,
+                        fontSize: 14,
+                      ),
+                    ),
+                    const SizedBox(height: 5),
+                    const Text(
+                      "12 min",
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 14,
+                      ),
+                    ),
                   ],
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 15)
+          const SizedBox(height: 15),
         ],
       ),
     );
