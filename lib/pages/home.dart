@@ -4,10 +4,11 @@ import 'package:interro/constants/constants.dart';
 import 'package:interro/models/quizz_model.dart';
 import 'package:interro/pages/quizz/components/quizz_block.dart';
 import 'package:interro/pages/quizz/create_quizz.dart';
-import 'package:interro/pages/settings/components/quizzes.dart';
+import 'package:interro/pages/settings/components/quizzes_test.dart';
 import 'package:interro/widgets/search_field.dart';
 import 'package:stroke_text/stroke_text.dart';
 
+/// Page d'accueil
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -16,6 +17,11 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with TickerProviderStateMixin {
+  /// liste des quizz
+  late CollectionReference quizzes;
+  late List<Quizz> quizzesTest2;
+
+  // recherche utilisateur
   final TextEditingController _searchController = TextEditingController();
   String _searchText = '';
 
@@ -25,21 +31,12 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     });
   }
 
-  bool _isQuizzMatchingSearch(Quizz quizz) {
-    final searchLowerCase = _searchText.toLowerCase();
-    final quizzFullName =
-        "${quizz.name ?? ''} ${quizz.description ?? ''}".toLowerCase();
-    return quizzFullName.contains(searchLowerCase);
-  }
-
-  /// liste des quizz
-  late CollectionReference quizzes;
-
   @override
   void initState() {
     super.initState();
     _searchController.addListener(_performSearch);
     quizzes = FirebaseFirestore.instance.collection("quizzes");
+    quizzesTest2 = quizzesTest;
   }
 
   @override
@@ -47,6 +44,13 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     _searchController.removeListener(_performSearch);
     _searchController.dispose();
     super.dispose();
+  }
+
+  bool _isQuizzMatchingSearch(Quizz quizz) {
+    final searchLowerCase = _searchText.toLowerCase();
+    final quizzFullName =
+        "${quizz.name ?? ''} ${quizz.description ?? ''}".toLowerCase();
+    return quizzFullName.contains(searchLowerCase);
   }
 
   @override
@@ -69,7 +73,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         decoration: const BoxDecoration(
           color: primaryColor,
         ),
-        padding: const EdgeInsets.only(top: 40),
+        padding: const EdgeInsets.only(top: 40, left: 15, right: 15),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -112,24 +116,14 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: quizzesTest.length,
+                padding: EdgeInsets.symmetric(vertical: 10),
+                itemCount: quizzesTest2.length,
                 itemBuilder: (context, index) {
-                  final quizz = quizzesTest[index];
+                  final quizz = quizzesTest2[index];
                   if (_isQuizzMatchingSearch(quizz)) {
-                    return Material(
-                      child: ListTile(
-                        title: Text(
-                          quizz.name ?? '',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                          ),
-                        ),
-                        subtitle: Text(quizz.description ?? ''),
-                      ),
-                    );
+                    return QuizzBlock(quizz: quizz);
                   } else {
-                    return const Text("Aucun quizz trouvé");
+                    return Container();
                   }
                 },
               ),

@@ -13,7 +13,7 @@ AppBar myAppBar(
     title: Text(
       title,
       style: const TextStyle(
-        color: primaryColor,
+        color: secondColor,
         fontSize: 18,
       ),
     ),

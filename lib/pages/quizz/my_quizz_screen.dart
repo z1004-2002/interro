@@ -15,7 +15,7 @@ class _MyQuizzScreenState extends State<MyQuizzScreen> {
     return Scaffold(
       backgroundColor: primaryColor,
       appBar: myAppBar(
-        title: 'Mon profil',
+        title: 'Mes quizz',
         implyLeading: false,
         context: context,
       ),

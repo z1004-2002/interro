@@ -47,6 +47,7 @@ dependencies:
   shared_preferences: ^2.0.15
   stroke_text: any
   provider: any
+  share_plus: ^9.0.0
 
 dev_dependencies:
   flutter_test:
