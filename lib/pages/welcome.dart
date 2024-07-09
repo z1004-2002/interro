@@ -59,7 +59,10 @@ class _WelcomeState extends State<Welcome> {
                   ],
                 ),
               ),
-              MyButtons(onTap: login, text: "Commencer"),
+              MyButtons(
+                onTap: login,
+                text: "Commencer",
+              ),
             ],
           ),
         ),

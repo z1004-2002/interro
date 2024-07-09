@@ -110,7 +110,10 @@ class _SignUpState extends State<SignUp> {
                   textInputType: TextInputType.text,
                   isPass: true,
                 ),
-                MyButtons(onTap: signupUser, text: "S'enregistrer"),
+                MyButtons(
+                  onTap: signupUser,
+                  text: "S'enregistrer",
+                ),
                 const SizedBox(height: 50),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

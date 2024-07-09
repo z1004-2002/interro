@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:interro/pages/create_quizz.dart';
+import 'package:getwidget/getwidget.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -15,7 +16,6 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     quizzes = FirebaseFirestore.instance.collection("les_quizz");
-
     super.initState();
   }
 
@@ -61,6 +61,19 @@ class _HomeState extends State<Home> {
                     streamSnap.data!.docs[index];
                 return Material(
                   child: ListTile(
+                    leading: const CircleAvatar(
+                      backgroundColor: const Color(0xff764abc),
+                      child: Icon(
+                        Icons.question_mark,
+                        color: Colors.white,
+                      ),
+                    ),
+                    trailing: IconButton(
+                      onPressed: () {
+                        print(documentSnapshot.get("quizz").length);
+                      },
+                      icon: const Icon(Icons.remove_red_eye),
+                    ),
                     title: Text(
                       documentSnapshot.get("theme"),
                       style: const TextStyle(

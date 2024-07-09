@@ -84,7 +84,10 @@ class _LogInState extends State<LogIn> {
               textInputType: TextInputType.text,
               isPass: true,
             ),
-            MyButtons(onTap: loginUser, text: "Connexion"),
+            MyButtons(
+              onTap: loginUser,
+              text: "Connexion",
+            ),
 
             // Don't have an account? got to signup screen
             Row(
